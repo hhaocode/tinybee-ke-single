@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tinybee.ke.biz.sem.mapper.SemActivityMapper">
+
+    <resultMap id="baseMap" type="cn.tinybee.ke.biz.sem.entity.SemActivity">
+        <id column="id" property="id"></id>
+        <result column="type" property="type"></result>
+        <result column="title" property="title"></result>
+        <result column="description" property="description"></result>
+        <result column="start_time" property="startTime"></result>
+        <result column="end_time" property="end_time"></result>
+        <result column="group_user_count" property="groupUserCount"></result>
+        <result column="creator" property="creator"></result>
+
+        <result column="create_time" property="createTime"></result>
+        <result column="modify_time" property="modifyTime"></result>
+        <result column="modifier" property="modifier"></result>
+        <result column="deleted" property="deleted"></result>
+        <collection property="courses" resultMap="cn.tinybee.ke.biz.sem.mapper.SemActivityCoursesMapper.baseMap" columnPrefix="c_"></collection>
+    </resultMap>
+
+    <select id="listActivityNoPage" resultMap="baseMap">
+        SELECT
+            a.*,
+            ac.id c_id,
+            ac.activity_id c_activity_id,
+            ac.course_id c_course_id,
+            ac.`delete` c_delete,
+            ac.activity_price c_activity_price,
+            c.original_price c_original_price,
+            c.cover_url c_original_price,
+            c.title c_title
+        FROM
+            t_sem_activity a,
+            t_sem_activity_courses ac,
+            t_cms_course c
+        WHERE
+            a.id = ac.activity_id
+            AND ac.course_id = c.id
+            <if test="activityIds != null and activityIds.size > 0">
+                AND ac.activity_id in
+                <foreach collection="activityIds" open="(" separator="," close=")" item="activityId">
+                    #{activityId}
+                </foreach>
+            </if>
+    </select>
+</mapper>

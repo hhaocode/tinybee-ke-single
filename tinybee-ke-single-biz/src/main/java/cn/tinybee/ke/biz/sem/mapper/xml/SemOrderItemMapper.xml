@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tinybee.ke.biz.sem.mapper.SemOrderItemMapper">
+
+    <select id="listOrderItemBySkuIds" resultType="cn.tinybee.ke.biz.sem.entity.SemOrderItem">
+        select it.*, c.title, c.cover_url from t_sem_order_item it, t_sem_order o ,t_cms_course c WHERE it.sku_id = c.id
+        and it.order_id = o.id
+<!--   and o.user_id = #{userId}-->
+        and o.order_status = 1
+            and it.sku_id in
+            <foreach collection="skuIds" item="skuId" open="(" separator="," close=")">
+                #{skuId}
+            </foreach>
+    </select>
+
+
+    <select id="listOrderItemByOrderIds" resultType="cn.tinybee.ke.biz.sem.entity.SemOrderItem">
+        select it.*, c.title, c.cover_url from t_sem_order_item it, t_sem_order o ,t_cms_course c WHERE it.sku_id = c.id
+        and it.order_id = o.id
+        <!--   and o.user_id = #{userId}-->
+        and o.id in
+        <foreach collection="orderIds" item="orderId" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </select>
+
+</mapper>

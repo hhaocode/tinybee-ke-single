@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tinybee.ke.biz.base.mapper.BaseDictMapper">
+
+    <select id="dictItemsByDictCode" parameterType="cn.tinybee.ke.biz.base.entity.BaseDictItem">
+        SELECT
+            t.*
+        FROM
+            t_base_dict_item t
+            INNER JOIN t_base_dict d ON t.available = TRUE
+            AND t.dict_id = d.id
+        WHERE
+            d.dict_code = #{dictCode}
+    </select>
+
+</mapper>

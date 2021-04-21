@@ -1,0 +1,5 @@
+available boolean NOT NULL default TRUE COMMENT '记录状态，true有效 false无效',
+creator INT UNSIGNED COMMENT '创建人',
+ modifier INT UNSIGNED COMMENT '修改人',
+ create_time datetime DEFAULT now() COMMENT '创建时间',
+ modify_time datetime DEFAULT now() COMMENT '修改时间',

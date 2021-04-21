@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tinybee.ke.biz.cms.mapper.CmsLearningPathStageMapper">
+
+    <resultMap id="baseMap" type="cn.tinybee.ke.biz.cms.entity.CmsLearningPathStage">
+        <id column="id" property="id"></id>
+        <result column="pathId" property="pathId"></result>
+        <result column="name" property="name"></result>
+        <result column="description" property="description"></result>
+        <result column="totalHour" property="totalHour"></result>
+        <collection property="courses" columnPrefix="c_" resultMap="cn.tinybee.ke.biz.cms.mapper.CmsCourseMapper.courseMap"></collection>
+    </resultMap>
+
+
+</mapper>

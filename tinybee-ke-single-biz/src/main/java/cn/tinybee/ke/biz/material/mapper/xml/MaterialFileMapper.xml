@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace= "cn.tinybee.ke.biz.material.mapper.MaterialFileMapper">
+
+
+    <resultMap id="MaterialFileMap" type="cn.tinybee.ke.biz.material.entity.MaterialFile">
+        <id property="id" column="id"></id>
+        <result column="fileUid" property="fileUid"></result>
+        <result column="ossId" property="ossId"></result>
+        <result column="md5" property="md5"></result>
+        <result column="fileUrl" property="fileUrl"></result>
+        <result column="filePath" property="filePath"></result>
+        <result column="groupId" property="groupId"></result>
+        <result column="classifyId" property="classifyId"></result>
+        <result column="name" property="name"></result>
+        <result column="extension" property="extension"></result>
+        <result column="contentType" property="contentType"></result>
+        <result column="title" property="title"></result>
+        <result column="intro" property="intro"></result>
+        <result column="size" property="size"></result>
+        <result column="type" property="type"></result>
+        <result column="vodUploadId" property="vodUploadId"></result>
+        <result column="vodId" property="vodId"></result>
+        <result column="vodThumbUrl" property="vodThumbUrl"></result>
+        <result column="vodDuration" property="vodDuration"></result>
+        <result column="creator" property="creator"></result>
+        <result column="createTime" property="createTime"></result>
+        <result column="modifier" property="modifier"></result>
+        <result column="modifyTime" property="modifyTime"></result>
+        <result column="deleted" property="deleted"></result>
+    </resultMap>
+
+
+    <select id="groupingStatisticsCnt" resultType="cn.tinybee.ke.common.entity.GroupCount">
+        select t.group_id AS id, count(t.id) as cnt from t_material_file t where t.type = #{type} GROUP BY t.group_id
+    </select>
+
+</mapper>

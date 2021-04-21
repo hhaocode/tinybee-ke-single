@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tinybee.ke.biz.cms.mapper.CmsClassifyMapper">
+
+    <resultMap id="classifyMap" type="cn.tinybee.ke.biz.cms.entity.CmsClassify">
+        <id column="id" property="id"></id>
+        <result column="pid" property="pid"></result>
+        <result column="name" property="name"></result>
+        <result column="icon" property="icon"></result>
+        <result column="image_url" property="imgUrl"></result>
+        <result column="type" property="type"></result>
+        <result column="sort" property="sort"></result>
+        <result column="available" property="available"></result>
+        <result column="remark" property="remark"></result>
+        <result column="deleted" property="deleted"></result>
+    </resultMap>
+
+    <select id="listByCourseIds" resultType="cn.tinybee.ke.biz.cms.entity.CmsClassify">
+        select t.* from t_cms_classify t , t_cms_course_classify c WHERE t.id = c.classify_id AND c.course_id in
+        <foreach collection="courseIds" item="courseId" open="(" separator="," close=")">
+            #{courseId}
+        </foreach>
+    </select>
+</mapper>

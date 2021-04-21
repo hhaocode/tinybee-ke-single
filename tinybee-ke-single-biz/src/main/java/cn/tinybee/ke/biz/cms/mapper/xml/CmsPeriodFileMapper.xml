@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tinybee.ke.biz.cms.mapper.CmsPeriodFileMapper">
+
+    <select id="listFileByPeriodId" resultType="cn.tinybee.ke.biz.material.entity.MaterialFile">
+        select f.* from t_material_file f, t_cms_period_file t where f.deleted = false and f.id = t.file_id and t.period_id = #{periodId}
+    </select>
+
+</mapper>

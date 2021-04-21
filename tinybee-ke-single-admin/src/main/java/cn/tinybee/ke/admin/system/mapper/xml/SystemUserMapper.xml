@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tinybee.ke.admin.system.mapper.SystemUserMapper">
+
+    <select id="getUserRoles" resultType="cn.tinybee.ke.admin.system.entity.SystemRole">
+        SELECT DISTINCT t.* FROM t_system_role t
+            INNER JOIN t_system_user_role rr ON t.id = rr.role_id
+            INNER JOIN t_system_user r ON rr.user_id = r.id
+        WHERE r.id = #{userId}
+    </select>
+
+    <select id="getUserPermissions" resultType="cn.tinybee.ke.admin.system.entity.SystemPermission">
+        SELECT DISTINCT t.* FROM t_system_permission t WHERE t.id in (
+        (select rr.permission_id FROM t_system_role_permission rr INNER JOIN t_system_user_role ur ON rr.role_id = ur.role_id WHERE ur.user_id = #{userId})
+        UNION (select p.permission_id FROM t_system_user_permission p WHERE p.user_id = #{userId}) )
+        <if test="available != null ">
+            AND t.available = true
+        </if>
+        <if test="types != null and types.size > 0">
+            AND t.type in
+            <foreach collection="types" open="(" separator="," close=")" item="type">
+                #{type}
+            </foreach>
+        </if>
+        ORDER BY t.sort
+    </select>
+</mapper>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tinybee.ke.biz.cms.mapper.CmsCourseMapper">
+
+    <resultMap id="courseMap" type="cn.tinybee.ke.biz.cms.entity.CmsCourse">
+        <id column="id" property="id"></id>
+        <result column="title" property="title"></result>
+        <result column="subtitle" property="subtitle"></result>
+        <result column="lecturer_id" property="lecturerId"></result>
+        <result column="type" property="type"></result>
+        <result column="status" property="status"></result>
+        <result column="bg_color" property="bgColor"></result>
+        <result column="cover_url" property="coverUrl"></result>
+        <result column="free" property="free"></result>
+        <result column="original_price" property="originalPrice"></result>
+
+        <result column="total_hours" property="totalHours"></result>
+        <result column="total_period" property="totalPeriod"></result>
+        <result column="apply_num" property="applyNum"></result>
+
+        <result column="on_shelf_type" property="onShelfType"></result>
+        <result column="on_shelf_time" property="onShelfTime"></result>
+        <result column="actual_on_shelf_time" property="actualOnShelfTime"></result>
+
+        <result column="creator" property="creator"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="modifier" property="modifier"></result>
+        <result column="modify_time" property="modifyTime"></result>
+
+        <result column="vip_free" property="vipFree"></result>
+
+        <collection property="directions" resultMap="cn.tinybee.ke.biz.cms.mapper.CmsClassifyMapper.classifyMap" columnPrefix="direction_"></collection>
+        <collection property="classifies" resultMap="cn.tinybee.ke.biz.cms.mapper.CmsClassifyMapper.classifyMap" columnPrefix="classify_"></collection>
+
+    </resultMap>
+
+    <select id="getDetailById" resultMap="courseMap">
+        SELECT
+            t.*,
+            d.id direction_id,
+            d.`name` direction_name,
+            d.icon direction_icon,
+            d.img_url direction_imageUrl,
+            d.remark direction_remark,
+            c.id classify_id,
+            c.`name` classify_name,
+            c.icon classify_icon,
+            c.img_url classify_imageUrl,
+            c.remark classify_remark
+        FROM
+            t_cms_course t
+						LEFT JOIN t_cms_course_classify dd ON t.id = dd.course_id AND dd.type = 1
+						LEFT JOIN t_cms_classify d ON dd.classify_id = d.id
+						LEFT JOIN t_cms_course_classify cc ON t.id = cc.course_id AND cc.type = 2
+            LEFT JOIN t_cms_classify c ON cc.classify_id = c.id
+        WHERE
+            t.id = #{id}
+    </select>
+
+    <select id="pageSearch" resultType="cn.tinybee.ke.biz.cms.entity.CmsCourse">
+        SELECT
+            t.*
+        FROM
+            t_cms_course t
+            <if test="courseSearchParam.directionId != null">
+            INNER JOIN t_cms_course_classify d ON t.id = d.course_id AND d.classify_id = #{courseSearchParam.directionId}
+            </if>
+            <if test="courseSearchParam.classifyId != null">
+                INNER JOIN t_cms_course_classify c ON t.id = c.course_id AND c.classify_id = #{courseSearchParam.classifyId}
+            </if>
+            <where>
+                <if test="courseSearchParam.free != null">
+                    AND t.free = #{courseSearchParam.free}
+                </if>
+                <if test="courseSearchParam.kw != null and courseSearchParam.kw != ''">
+                    AND t.title like CONCAT('%',#{courseSearchParam.kw},'%')
+                </if>
+                <if test="courseSearchParam.types != null and courseSearchParam.types.size > 0">
+                    AND t.type in
+                    <foreach collection="courseSearchParam.types" item="type" open="(" separator="," close=")">
+                        #{type}
+                    </foreach>
+                </if>
+                <if test="courseSearchParam.type != null">
+                    AND t.type = #{courseSearchParam.type}
+                </if>
+                <if test="courseSearchParam.status != null">
+                    AND t.status = #{courseSearchParam.status}
+                </if>
+            </where>
+    </select>
+
+    <update id="incrementApplyNum">
+        update t_cms_course set apply_num = apply_num + 1 where id = #{courseId}
+    </update>
+
+    <select id="listCourseByTypeOrderActualOnShelfTimeDesc" resultType="cn.tinybee.ke.biz.cms.entity.CmsCourse">
+        select * from t_cms_course where status = 2 and type = #{type} order by actual_on_shelf_time desc limit #{count}
+    </select>
+
+    <select id="newCourses" resultType="cn.tinybee.ke.biz.cms.entity.CmsCourse">
+         select * from t_cms_course where status = 2 and type in (1, 2) order by actual_on_shelf_time desc limit #{count}
+    </select>
+
+    <select id="countByType" resultType="cn.tinybee.ke.common.entity.GroupCount">
+        select t.type as id, count(t.id) as cnt from t_cms_course t GROUP BY t.type
+    </select>
+
+</mapper>

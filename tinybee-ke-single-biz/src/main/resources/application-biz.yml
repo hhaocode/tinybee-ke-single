@@ -1,0 +1,10 @@
+#mybatis-plus:
+#  mapper-locations: classpath*:cn/arcus/**/mapper/xml/*.xml
+#  configuration:
+#    map-underscore-to-camel-case: true
+
+mybatis-plus:
+  mapper-locations: classpath*:/cn/tinybee/**/mapper/xml/*.xml
+    # 是否将sql打印到控制面板(该配置会将sql语句和查询的结果都打印到控制台)
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

@@ -1,0 +1,19 @@
+server:
+  port: 7100
+
+spring:
+  profiles:
+    include:
+      - biz
+
+  shiro:
+    excludes: /**/login,/**/a.m3u8,/**/*.ts,/**/noAuth,/**/authFail,/**/grant-authorization,/**/common/*,/**/open/*,/swagger-ui.html,/doc.html,/service-worker.js,/favicon.ico,/swagger-resources/**,/v2/api-docs,/webjars/**,/webjars/springfox-swagger-ui/**,/druid/**
+  servlet:
+    multipart:
+#      enabled: true
+#      file-size-threshold: 100000000000
+      max-file-size: 100MB
+      max-request-size: 100MB
+  aop:
+    proxy-target-class: true
+

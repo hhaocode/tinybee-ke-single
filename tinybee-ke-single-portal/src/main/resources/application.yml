@@ -1,0 +1,11 @@
+server:
+  port: 8100
+
+spring:
+  profiles:
+    include:
+    - biz
+    active: dev
+
+  security:
+    permits: /api/auth/login,/api/auth/register,/api/auth/send/**/auth-code/**,/api/auth/cache-user,/api/public/**,/api/open/**

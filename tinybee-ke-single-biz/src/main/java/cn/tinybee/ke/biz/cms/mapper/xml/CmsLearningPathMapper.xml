@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tinybee.ke.biz.cms.mapper.CmsLearningPathMapper">
+
+    <select id="listPath" resultType="cn.tinybee.ke.biz.cms.entity.CmsLearningPath">
+        SELECT
+            s.*,
+            IFNULL(stt.stageCnt,0) AS stageCnt,
+            IFNULL(pc.courseCnt ,0) AS courseCnt
+        FROM
+            t_cms_learning_path s
+            LEFT JOIN ( SELECT st.path_id, count( st.id ) AS stageCnt FROM t_cms_learning_path_stage st GROUP BY st.path_id ) stt ON s.id = stt.path_id
+            LEFT JOIN ( SELECT p.path_id, count( p.course_id ) AS courseCnt FROM t_cms_learning_path_course p GROUP BY p.path_id ) pc ON s.id = pc.path_id
+    </select>
+
+</mapper>

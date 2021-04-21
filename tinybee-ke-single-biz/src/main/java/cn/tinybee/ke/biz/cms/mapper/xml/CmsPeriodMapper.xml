@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tinybee.ke.biz.cms.mapper.CmsPeriodMapper">
+
+    <resultMap id="CmsPeriodMap" type="cn.tinybee.ke.biz.cms.entity.CmsPeriod">
+        <id property="id" column="id"></id>
+        <result property="courseId" column="course_id"></result>
+        <result property="chapterId" column="chapter_id"></result>
+        <result property="title" column="title"></result>
+        <result property="subtitle" column="subtitle"></result>
+        <result property="coverUrl" column="cover_url"></result>
+        <result property="bgColor" column="bg_color"></result>
+        <result property="shareTitle" column="share_title"></result>
+        <result property="creator" column="creator"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="free" column="free"></result>
+        <result property="freeDuration" column="free_duration"></result>
+        <result property="videoId" column="video_id"></result>
+        <result property="audioId" column="audio_id"></result>
+        <result property="articleId" column="article_id"></result>
+        <result property="fileId" column="file_id"></result>
+
+        <result property="hasLive" column="has_live"></result>
+
+
+<!--        <association property="audio" resultMap="cn.tinybee.ke.biz.material.mapper.MaterialFileMapper.MaterialFileMap" columnPrefix="audio_"></association>-->
+<!--        <association property="video" resultMap="cn.tinybee.ke.biz.material.mapper.MaterialFileMapper.MaterialFileMap" columnPrefix="video_"></association>-->
+<!--        <association property="article" resultMap="cn.tinybee.ke.biz.material.mapper.MaterialArticleMapper.MaterialArticleMap" columnPrefix="article_"></association>-->
+<!--        <association property="file" resultMap="cn.tinybee.ke.biz.material.mapper.MaterialFileMapper.MaterialFileMap" columnPrefix="file_"></association>-->
+
+    </resultMap>
+
+    <select id="getDetailById" resultMap="CmsPeriodMap">
+        SELECT
+            p.*
+        FROM
+            t_cms_period p
+        WHERE
+            p.id = #{id}
+    </select>
+</mapper>
